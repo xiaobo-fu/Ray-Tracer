@@ -60,7 +60,7 @@ class RenderEngine:
                 color += self.ray_trace(new_ray, scene, depth+1) * obj_hit.material.reflection
 
         else:
-            dist_hit, dist_far = self.find_nearest(ray, scene)
+            return color
 
         # refraction
         # check if the hit object is transparent
@@ -101,23 +101,32 @@ class RenderEngine:
             refraction_ray_para = -1 * hit_normal * k
             refraction_direction = refraction_ray_perp + refraction_ray_para
             refraction_ray = Ray(refraction_origin, refraction_direction)
+
+            import test
+            test.draw_ray(refraction_ray)
+
             return self.ray_trace(refraction_ray, scene, depth)
 
     # find the nearest object, and return the object and the distance to it
     def find_nearest(self, ray, scene,):
         dist_min = None
         dist_far_min = None
+        dist_refraction_min = None
+        dist_far_refrection_min = None
         obj_hit = None
 
         # check objects in the scene
         for obj in scene.objects:
             # check the distance using the object's intersects function
             dist, dist_far = obj.intersects(ray)
-            #
+
+            # find nearest for non_refraction intersection
+            # if dist is not None then we hit something; and we restore the smallest dist
             if dist is not None and (obj_hit is None or dist < dist_min):
                 dist_min = dist
                 dist_far_min = dist_far
                 obj_hit = obj
+
         return dist_min, obj_hit, dist_far_min
 
     # calculate the hit position color

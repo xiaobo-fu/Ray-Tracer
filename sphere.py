@@ -21,10 +21,8 @@ class Sphere:
             dist = (-b - sqrt(discriminant)) / 2
             dist_far = (-b + sqrt(discriminant)) / 2
             if dist >= 0:
-                return dist, dist, dist_far
-            if dist < 0:
-                return None, dist, dist_far
-        return None, None, None
+                return dist, dist_far
+        return None, None
 
     # returns surface normal to the point on sphere's surface
     def normal(self, surface_point):
