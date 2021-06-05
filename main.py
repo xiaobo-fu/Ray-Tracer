@@ -9,7 +9,7 @@ from vector import Vector
 
 
 def main():
-    WIDTH = 400
+    WIDTH = 900
     HEIGHT = int(WIDTH / 2)
     camera = Vector(0, 0, -2.0)
     objects = [
@@ -31,11 +31,11 @@ def main():
         Sphere(Point(0.7, 0.4, 1.6), 0.1, Material(Color.from_hex("#ffb4a2"), ambient=0, diffuse=0.6, specular=0.5,
                                                    reflection=0.2, transparency=0)),
         # transparent ball
-        Sphere(Point(0.9, 0.0, 3.1), 0.5, Material(Color.from_hex("#FFFFFF"), transparency=1.0, specular=0.5,
-                                                 diffuse=0.1, reflection=0.2, refraction_index=2.0)),
+        Sphere(Point(0.7, 0.0, 3.1), 0.5, Material(Color.from_hex("#FFFFFF"), transparency=1.0, specular=0.5,
+                                                 diffuse=0.0, reflection=0.1, refraction_index=1.5)),
         # transparent ball
-        Sphere(Point(-0.5, 0.3, 1), 0.2, Material(Color.from_hex("#FFFFFF"), transparency=1.0, specular=0.5, diffuse=0.1,
-                                                  reflection=0.2, refraction_index=2.0)),
+        Sphere(Point(-0.5, 0.3, 1), 0.2, Material(Color.from_hex("#FFFFFF"), transparency=1.0, specular=0.5,
+                                                  diffuse=0.0, reflection=0.1, refraction_index=1.5)),
     ]
 
     lights = [
