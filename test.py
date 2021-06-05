@@ -23,8 +23,8 @@ def draw_ray(ray):
     ray_start = (x0 + ray.origin.x, y0 - ray.origin.y)
     ray_end = (x0 + ray.origin.x + ray.direction.x * 1000, y0 - (ray.origin.y + ray.direction.y * 1000))
     pygame.draw.line(win, colour, ray_start, ray_end, 2)
-    pygame.time.wait(100)
-    pygame.display.update()
+    # pygame.time.wait(200)
+    # pygame.display.update()
 
 
 if __name__ == "__main__":
@@ -44,13 +44,19 @@ if __name__ == "__main__":
     win.fill((255, 255, 255))
     pygame.display.update()
 
-    sphere = Sphere(Vector(0, 0, 0), 100, Material(transparency=1.0
+    sphere1 = Sphere(Vector(0, 0, 0), 100, Material(transparency=1.0
                                                    , specular=0.5
                                                    , diffuse=0.1
                                                    , reflection=0.2
-                                                   , refraction_index=2.0))
+                                                   , refraction_index=1.5))
 
-    objects = [sphere]
+    sphere2 = Sphere(Vector(200, 200, 0), 100, Material(transparency=1.0
+                                                   , specular=0.5
+                                                   , diffuse=0.1
+                                                   , reflection=0.2
+                                                   , refraction_index=1.5))
+
+    objects = [sphere1, sphere2]
 
     WIDTH = 400
     HEIGHT = int(WIDTH / 2)
@@ -63,10 +69,12 @@ if __name__ == "__main__":
 
     scene = Scene(camera, objects, lights, WIDTH, HEIGHT)
 
-    pygame.draw.circle(win, (0, 0, 0), (x0 + sphere.center.x, y0 - sphere.center.y), sphere.radius, 1)
+    for sphere in objects:
+        pygame.draw.circle(win, (0, 0, 0), (x0 + sphere.center.x, y0 - sphere.center.y), sphere.radius, 1)
+
+    pygame.display.update()
 
     e = engine.RenderEngine()
-
 
     run = True
     while run:
@@ -75,13 +83,23 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 run = False
 
-        for i in range(-110, 110):
-            print(i)
+        if event.type == pygame.MOUSEBUTTONUP:
             win.fill((255, 255, 255))
-            ray = Ray(Vector(-400, 0), Vector(400, i))
-            pygame.draw.circle(win, (0, 0, 0), (x0 + sphere.center.x, y0 - sphere.center.y), sphere.radius, 1)
+
+            for sphere in objects:
+                pygame.draw.circle(win, (0, 0, 0), (x0 + sphere.center.x, y0 - sphere.center.y), sphere.radius, 1)
+
+            pos = pygame.mouse.get_pos()
+            xstart = -400
+            ystart = 0
+            xend = pos[0] - x0 - xstart
+            yend = -pos[1] + y0 - ystart
+
+            ray = Ray(Vector(xstart, ystart), Vector(xend, yend))
             draw_ray(ray)
+            print(e.find_nearest(ray, scene))
             e.ray_trace(ray, scene)
+            pygame.display.update()
 
 
 
