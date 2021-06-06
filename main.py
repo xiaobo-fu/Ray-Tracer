@@ -9,7 +9,7 @@ from vector import Vector
 
 
 def main():
-    WIDTH = 900
+    WIDTH = 200
     HEIGHT = int(WIDTH / 2)
     camera = Vector(0, 0, -2.0)
     objects = [

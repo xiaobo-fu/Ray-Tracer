@@ -27,3 +27,4 @@ class Sphere:
     # returns surface normal to the point on sphere's surface
     def normal(self, surface_point):
         return (surface_point - self.center).normalize()
+

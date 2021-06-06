@@ -1,6 +1,6 @@
 import pygame
 import engine
-from sphere import Sphere
+from sphere import Sphere, Sphere_Reverse
 from ray import Ray
 from vector import Vector
 from scene import Scene
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     win.fill((255, 255, 255))
     pygame.display.update()
 
-    sphere1 = Sphere(Vector(0, 0, 0), 100, Material(transparency=1.0
+    sphere1 = Sphere_Reverse(Vector(0, 0, 0), 200, Material(transparency=0.0
                                                    , specular=0.5
                                                    , diffuse=0.1
                                                    , reflection=0.2
@@ -90,7 +90,7 @@ if __name__ == "__main__":
                 pygame.draw.circle(win, (0, 0, 0), (x0 + sphere.center.x, y0 - sphere.center.y), sphere.radius, 1)
 
             pos = pygame.mouse.get_pos()
-            xstart = -400
+            xstart = -100
             ystart = 0
             xend = pos[0] - x0 - xstart
             yend = -pos[1] + y0 - ystart

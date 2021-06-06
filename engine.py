@@ -63,25 +63,6 @@ class RenderEngine:
         # calculate the hit position diffusion and specular using color at function
         color += self.color_at(obj_hit, hit_pos, hit_normal, scene)
 
-        # calculating the reflection
-        if depth < self.MAX_DEPTH:
-            new_ray_pos = hit_pos + hit_normal * self.MIN_DISPLACE
-            new_ray_dir = ray.direction - 2 * ray.direction.dot_product(hit_normal) * hit_normal
-            new_ray = Ray(new_ray_pos, new_ray_dir)
-            # dim the new ray by the reflection coefficient
-            color += self.ray_trace(new_ray, scene, depth+1) * obj_hit.material.reflection
-
-        # calculating refraction if the hit object is transparent
-        if obj_hit.material.transparency != 0:
-            if self.MIN_DISPLACE > dist_hit > -self.MIN_DISPLACE:
-                dist_hit = 0
-            hit_pos_far = ray.origin + ray.direction * dist_far
-            hit_normal_far = obj_hit.normal(hit_pos_far)
-            color += self.refraction(ray, obj_hit, hit_pos, dist_hit, hit_normal, hit_pos_far, dist_far,
-                                    hit_normal_far, scene, depth)
-
-            return color
-
         return color
 
     def refraction(self, ray, obj_hit, hit_pos, dist_hit, hit_normal, hit_pos_far, dist_far,
@@ -114,10 +95,6 @@ class RenderEngine:
             refraction_direction = refraction_ray_perp + refraction_ray_para
             refraction_ray = Ray(refraction_origin, refraction_direction)
 
-            # todo delete after finish
-            import test
-            test.draw_ray(refraction_ray)
-
             return self.ray_trace(refraction_ray, scene, depth)
 
     # find the nearest object, and return the object and the distance to it
@@ -148,33 +125,4 @@ class RenderEngine:
         material = obj_hit.material
         obj_color = material.color_at(hit_pos)
 
-        # a vector to camera
-        to_cam = scene.camera - hit_pos
-
-        # a variable decides the size of specular
-        specular_k = 1000
-
-        # a very basic ambient light
-        color = material.ambient * Color.from_hex("#CCCCFF")
-
-        # light calculations
-        for light in scene.lights:
-            # a ray from hit position to light position
-            to_light = Ray(hit_pos, light.position - hit_pos)
-
-            # to check if any object between the hit point and the light
-            isBlockd, hit_obj, _ = self.find_nearest(to_light, scene)
-
-            shadow_index = 1.0
-            if isBlockd:
-                shadow_index = 0.0
-                if hit_obj.material.transparency != 0:
-                    shadow_index = 0.7
-
-            # lambert diffuse shading
-            color += obj_color * material.diffuse * max(normal.dot_product(to_light.direction), 0) * shadow_index
-            # Blinn–Phong specular shading
-            half_vector = (to_light.direction + to_cam).normalize()
-            color += light.color * material.specular * max(normal.dot_product(half_vector), 0) ** specular_k * shadow_index
-
-        return color
+        return obj_color
