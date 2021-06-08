@@ -63,13 +63,13 @@ class RenderEngine:
         # calculate the hit position diffusion and specular using color at function
         color += self.color_at(obj_hit, hit_pos, hit_normal, scene)
 
-        # calculating the reflection
-        if depth < self.MAX_DEPTH:
-            new_ray_pos = hit_pos + hit_normal * self.MIN_DISPLACE
-            new_ray_dir = ray.direction - 2 * ray.direction.dot_product(hit_normal) * hit_normal
-            new_ray = Ray(new_ray_pos, new_ray_dir)
-            # dim the new ray by the reflection coefficient
-            color += self.ray_trace(new_ray, scene, depth+1) * obj_hit.material.reflection
+        # # calculating the reflection
+        # if depth < self.MAX_DEPTH:
+        #     new_ray_pos = hit_pos + hit_normal * self.MIN_DISPLACE
+        #     new_ray_dir = ray.direction - 2 * ray.direction.dot_product(hit_normal) * hit_normal
+        #     new_ray = Ray(new_ray_pos, new_ray_dir)
+        #     # dim the new ray by the reflection coefficient
+        #     color += self.ray_trace(new_ray, scene, depth+1) * obj_hit.material.reflection
 
         # # calculating refraction if the hit object is transparent
         # if obj_hit.material.transparency != 0:

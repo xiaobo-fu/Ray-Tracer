@@ -1,0 +1,19 @@
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from color import Color\nfrom engine import RenderEngine\nfrom light import Light\nfrom material import Material, ChequeredMaterial\nfrom point import Point\nfrom scene import Scene\nfrom sphere import Sphere\nfrom vector import Vector\n\n\ndef main():\n    WIDTH = 900\n    HEIGHT = int(WIDTH / 2)\n    camera = Vector(0, 0, -2.0)\n    objects = [\n        # Ground Plane with Chequered Material, also a giant ball\n        Sphere(Point(-1.8, 1000.5, 1), 1000.0, ChequeredMaterial(color1=Color.from_hex(\"#FFFFFF\"),\n                                                                color2=Color.from_hex(\"#87ceeb\"), ambient=0.0,\n                                                                diffuse=0.6, specular=0,\n                                                                reflection=0.05, ),),\n        # background ball\n        Sphere(Point(0, 0, 1000010), 1000000, Material(Color.from_hex(\"#87ceeb\"), ambient=0, diffuse=0.6, specular=0,\n                                                   reflection=0, transparency=0)),\n        # Red ball\n        Sphere(Point(0.2, 0.1, 4), 0.4, Material(Color.from_hex(\"#ddbea9\"), ambient=0, diffuse=1, specular=0.5,\n                                                 reflection=0.5, transparency=0)),\n        # Blue ball\n        Sphere(Point(-1, -0.2, 3), 0.7, Material(Color.from_hex(\"#d75b1d\"), ambient=0, diffuse=1.0, specular=0.5,\n                                                 reflection=0.8, transparency=0)),\n        # Pink ball\n        Sphere(Point(0.7, 0.4, 1.6), 0.1, Material(Color.from_hex(\"#ffb4a2\"), ambient=0, diffuse=0.6, specular=0.5,\n                                                   reflection=0.2, transparency=0)),\n        # transparent ball\n        Sphere(Point(0.7, 0.0, 3.1), 0.5, Material(Color.from_hex(\"#FFFFFF\"), transparency=1.0, specular=0.5,\n                                                 diffuse=0.0, reflection=0.1, refraction_index=1.5)),\n        # transparent ball\n        Sphere(Point(-0.5, 0.3, 1), 0.2, Material(Color.from_hex(\"#FFFFFF\"), transparency=1.0, specular=0.5,\n                                                  diffuse=0.0, reflection=0.1, refraction_index=1.5)),\n    ]\n\n    lights = [\n        Light(Point(10, -10, -2), Color.from_hex(\"#FFFFFF\")),\n        Light(Point(-1, -10, -2), Color.from_hex(\"#FFFFFF\")),\n    ]\n\n    scene = Scene(camera, objects, lights, WIDTH, HEIGHT)\n    engine = RenderEngine()\n    image = engine.render(scene)\n\n    with open(\"test.ppm\", \"w\") as img_file:\n        image.write_ppm(img_file)\n\n\nif __name__ == '__main__':\n    main()\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+--- a/main.py	(revision 70fd041e37d8b1cc7e8d25a4259a76f143749a2a)
++++ b/main.py	(date 1622999449407)
+@@ -9,7 +9,7 @@
+ 
+ 
+ def main():
+-    WIDTH = 900
++    WIDTH = 200
+     HEIGHT = int(WIDTH / 2)
+     camera = Vector(0, 0, -2.0)
+     objects = [
