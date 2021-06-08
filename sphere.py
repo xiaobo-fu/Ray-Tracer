@@ -20,7 +20,7 @@ class Sphere:
         if discriminant >= 0:
             dist = (-b - sqrt(discriminant)) / 2
             dist_far = (-b + sqrt(discriminant)) / 2
-            if dist >= 0:
+            if dist >= -0.00001:
                 return dist, dist_far
         return None, None
 

@@ -9,7 +9,7 @@ from math import sqrt
 class RenderEngine:
 
     MAX_DEPTH = 5
-    MIN_DISPLACE = 0.0001
+    MIN_DISPLACE = 0
 
     # basic setups
     def render(self, scene):
@@ -163,16 +163,17 @@ class RenderEngine:
             to_light = Ray(hit_pos, light.position - hit_pos)
 
             # to check if any object between the hit point and the light
-            isBlockd, hit_obj, _ = self.find_nearest(to_light, scene)
+            _, _, isBlockd = self.find_nearest(to_light, scene)
 
             shadow_index = 1.0
             if isBlockd:
                 shadow_index = 0.0
-                if hit_obj.material.transparency != 0:
-                    shadow_index = 0.7
 
-            # lambert diffuse shading
-            color += obj_color * material.diffuse * max(normal.dot_product(to_light.direction), 0) * shadow_index
+            # # lambert diffuse shading
+            # color += obj_color * material.diffuse * max(normal.dot_product(to_light.direction), 0) * shadow_index
+
+            color += obj_color / 2 * shadow_index
+
             # Blinn–Phong specular shading
             half_vector = (to_light.direction + to_cam).normalize()
             color += light.color * material.specular * max(normal.dot_product(half_vector), 0) ** specular_k * shadow_index

@@ -1,5 +1,8 @@
-import time
-t = time.time()
-for i in range(1000 * 1000 * 1000):
-    a = 1 + 1
-print(time.time() - t)
+def three():
+    return -0.0000001, 2, 3
+
+a, _, _ = three()
+
+if a:
+    print(a)
+

@@ -22,7 +22,7 @@ def main():
         Sphere(Point(0, 0, 1000010), 1000000, Material(Color.from_hex("#87ceeb"), ambient=0, diffuse=0.6, specular=0,
                                                    reflection=0, transparency=0)),
         # Red ball
-        Sphere(Point(0.2, 0.1, 4), 0.4, Material(Color.from_hex("#ddbea9"), ambient=0, diffuse=1, specular=0.5,
+        Sphere(Point(0.2, 0.1, 4), 0.4, Material(Color.from_hex("#ddbea9"), ambient=0, diffuse=1.0, specular=0.5,
                                                  reflection=0.5, transparency=0)),
         # Blue ball
         Sphere(Point(-1, -0.2, 3), 0.7, Material(Color.from_hex("#d75b1d"), ambient=0, diffuse=1.0, specular=0.5,
