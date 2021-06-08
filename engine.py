@@ -71,16 +71,16 @@ class RenderEngine:
             # dim the new ray by the reflection coefficient
             color += self.ray_trace(new_ray, scene, depth+1) * obj_hit.material.reflection
 
-        # calculating refraction if the hit object is transparent
-        if obj_hit.material.transparency != 0:
-            if self.MIN_DISPLACE > dist_hit > -self.MIN_DISPLACE:
-                dist_hit = 0
-            hit_pos_far = ray.origin + ray.direction * dist_far
-            hit_normal_far = obj_hit.normal(hit_pos_far)
-            color += self.refraction(ray, obj_hit, hit_pos, dist_hit, hit_normal, hit_pos_far, dist_far,
-                                    hit_normal_far, scene, depth)
-
-            return color
+        # # calculating refraction if the hit object is transparent
+        # if obj_hit.material.transparency != 0:
+        #     if self.MIN_DISPLACE > dist_hit > -self.MIN_DISPLACE:
+        #         dist_hit = 0
+        #     hit_pos_far = ray.origin + ray.direction * dist_far
+        #     hit_normal_far = obj_hit.normal(hit_pos_far)
+        #     color += self.refraction(ray, obj_hit, hit_pos, dist_hit, hit_normal, hit_pos_far, dist_far,
+        #                             hit_normal_far, scene, depth)
+        #
+        #     return color
 
         return color
 

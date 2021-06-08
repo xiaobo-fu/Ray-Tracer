@@ -14,7 +14,7 @@ def main():
     camera = Vector(0, 0, -2.0)
     objects = [
         # Ground Plane with Chequered Material, also a giant ball
-        Sphere(Point(-1.8, 1000.5, 1), 1000.0, ChequeredMaterial(color1=Color.from_hex("#FFFFFF"),
+        Sphere(Point(-1.8, 500.5, 1), 500.0, ChequeredMaterial(color1=Color.from_hex("#FFFFFF"),
                                                                 color2=Color.from_hex("#87ceeb"), ambient=0.0,
                                                                 diffuse=0.6, specular=0,
                                                                 reflection=0.05, ),),
@@ -32,10 +32,10 @@ def main():
                                                    reflection=0.2, transparency=0)),
         # transparent ball
         Sphere(Point(0.7, 0.0, 3.1), 0.5, Material(Color.from_hex("#FFFFFF"), transparency=1.0, specular=0.5,
-                                                 diffuse=0.0, reflection=0.1, refraction_index=1.5)),
+                                                 diffuse=0.9, reflection=0.1, refraction_index=1.5)),
         # transparent ball
         Sphere(Point(-0.5, 0.3, 1), 0.2, Material(Color.from_hex("#FFFFFF"), transparency=1.0, specular=0.5,
-                                                  diffuse=0.0, reflection=0.1, refraction_index=1.5)),
+                                                  diffuse=0.9, reflection=0.1, refraction_index=1.5)),
     ]
 
     lights = [
