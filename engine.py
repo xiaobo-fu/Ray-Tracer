@@ -174,8 +174,8 @@ class RenderEngine:
 
             color += obj_color / 2 * shadow_index
 
-            # Blinn–Phong specular shading
-            half_vector = (to_light.direction + to_cam).normalize()
-            color += light.color * material.specular * max(normal.dot_product(half_vector), 0) ** specular_k * shadow_index
+            # # Blinn–Phong specular shading
+            # half_vector = (to_light.direction + to_cam).normalize()
+            # color += light.color * material.specular * max(normal.dot_product(half_vector), 0) ** specular_k * shadow_index
 
         return color
