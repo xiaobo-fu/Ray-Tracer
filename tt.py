@@ -1,5 +1,5 @@
-import time
-t = time.time()
-for i in range(1000 * 1000 * 1000):
-    a = 1 + 1
-print(time.time() - t)
+from math import sqrt, pi, sin
+
+camera_angle_factor = sin(180 / 2 / 360 * 2 * pi)
+
+print(camera_angle_factor)

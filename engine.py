@@ -2,7 +2,7 @@ from image import Image
 from ray import Ray
 from point import Point
 from color import Color
-from math import sqrt
+from math import sqrt, pi, tan
 
 
 # renders 3D objects into 2D objects using ray tracing
@@ -18,6 +18,9 @@ class RenderEngine:
         height = scene.height
         aspect_ratio = float(width) / height
 
+        camera = scene.camera
+        camera_angle_factor = tan((camera.angle / 360 * 2 * pi) / 2)
+
         # set up the ray steps according to pixels
         # most left as -1 and most right as +1, same for y axis
         x0 = -1.0
@@ -27,8 +30,7 @@ class RenderEngine:
         y0 = -1.0 / aspect_ratio
         y1 = +1.0 / aspect_ratio
         ystep = (y1 - y0) / (height - 1)
-
-        camera = scene.camera
+        z = camera.magnitude
 
         # initialize pixels array
         pixels = Image(width, height)
@@ -39,7 +41,7 @@ class RenderEngine:
             for i in range(width):
                 x = x0 + i * xstep
                 # shoot rays from the camera to each pixel
-                ray = Ray(camera, Point(x, y) - camera)
+                ray = Ray(camera.position, camera.direction + Point(x * camera_angle_factor, y * camera_angle_factor))
                 # set color to each pixel using ray trace
                 pixels.set_pixel(i, j, self.ray_trace(ray, scene))
             # print the progress
@@ -114,10 +116,6 @@ class RenderEngine:
             refraction_direction = refraction_ray_perp + refraction_ray_para
             refraction_ray = Ray(refraction_origin, refraction_direction)
 
-            # todo delete after finish
-            import test
-            test.draw_ray(refraction_ray)
-
             return self.ray_trace(refraction_ray, scene, depth)
 
     # find the nearest object, and return the object and the distance to it
@@ -149,7 +147,7 @@ class RenderEngine:
         obj_color = material.color_at(hit_pos)
 
         # a vector to camera
-        to_cam = scene.camera - hit_pos
+        to_cam = scene.camera.position - hit_pos
 
         # a variable decides the size of specular
         specular_k = 1000

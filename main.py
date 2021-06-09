@@ -6,12 +6,13 @@ from point import Point
 from scene import Scene
 from sphere import Sphere
 from vector import Vector
+from camera import Camera
 
 
 def main():
-    WIDTH = 900
+    WIDTH = 200
     HEIGHT = int(WIDTH / 2)
-    camera = Vector(0, 0, -2.0)
+    camera = Camera(position=Vector(0, 0, -2), look_at=Vector(0, 0, 0), angle=53.13)
     objects = [
         # Ground Plane with Chequered Material, also a giant ball
         Sphere(Point(-1.8, 1000.5, 1), 1000.0, ChequeredMaterial(color1=Color.from_hex("#FFFFFF"),
