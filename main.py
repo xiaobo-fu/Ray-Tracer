@@ -4,23 +4,23 @@ from light import Light
 from material import Material, ChequeredMaterial
 from point import Point
 from scene import Scene
-from sphere import Sphere
+from sphere import Sphere, SphereReverse
 from vector import Vector
 from camera import Camera
 
 
 def main():
-    WIDTH = 800
+    WIDTH = 400
     HEIGHT = int(WIDTH / 2)
-    camera = Camera(position=Vector(4, 0, 0.5), look_at=Vector(0, 0, 3), angle=53)
+    camera = Camera(position=Vector(0, 0, -2), look_at=Vector(0, 0, 3), angle=53)
     objects = [
         # Ground Plane with Chequered Material, also a giant ball
-        Sphere(Point(-1.8, 1000.5, 1), 1000.0, ChequeredMaterial(color1=Color.from_hex("#FFFFFF"),
+        Sphere(Point(0, 50.5, 2), 50.0, ChequeredMaterial(color1=Color.from_hex("#FFFFFF"),
                                                                 color2=Color.from_hex("#87ceeb"), ambient=0.0,
-                                                                diffuse=0.6, specular=0,
+                                                                diffuse=1.0, specular=0,
                                                                 reflection=0.05, ),),
         # background ball
-        Sphere(Point(0, 0, 1000010), 1000000, Material(Color.from_hex("#87ceeb"), ambient=0, diffuse=0.6, specular=0,
+        SphereReverse(Point(0, 0, 0), 1000000, Material(Color.from_hex("#87ceeb"), ambient=0, diffuse=1.0, specular=0,
                                                    reflection=0, transparency=0)),
         # Red ball
         Sphere(Point(0.2, 0.1, 4), 0.4, Material(Color.from_hex("#ddbea9"), ambient=0, diffuse=1, specular=0.5,
@@ -40,8 +40,8 @@ def main():
     ]
 
     lights = [
-        Light(Point(10, -10, -2), Color.from_hex("#FFFFFF")),
-        Light(Point(-1, -10, -2), Color.from_hex("#FFFFFF")),
+        Light(Point(10, -10, -2), intensity=0.5, color=Color.from_hex("#FFFFFF")),
+        Light(Point(-1, -10, -2), intensity=0.5, color=Color.from_hex("#FFFFFF")),
     ]
 
     scene = Scene(camera, objects, lights, WIDTH, HEIGHT)

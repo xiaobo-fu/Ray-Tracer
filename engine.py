@@ -3,8 +3,8 @@ from ray import Ray
 from point import Point
 from color import Color
 from math import sqrt, pi, cos, sin
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
 
 
 # renders 3D objects into 2D objects using ray tracing
@@ -154,8 +154,6 @@ class RenderEngine:
     def find_nearest(self, ray, scene,):
         dist_min = None
         dist_far_min = None
-        dist_refraction_min = None
-        dist_far_refrection_min = None
         obj_hit = None
 
         # check objects in the scene
@@ -192,19 +190,22 @@ class RenderEngine:
             # a ray from hit position to light position
             to_light = Ray(hit_pos, light.position - hit_pos)
 
+            # distance between hit position and light
+            dist_to_light = (hit_pos - light.position).magnitude()
+
             # to check if any object between the hit point and the light
-            isBlockd, hit_obj, _ = self.find_nearest(to_light, scene)
+            dist, hit_obj, _ = self.find_nearest(to_light, scene)
 
             shadow_index = 1.0
-            if isBlockd:
+            if dist < dist_to_light:
                 shadow_index = 0.0
                 if hit_obj.material.transparency != 0:
                     shadow_index = 0.7
 
             # lambert diffuse shading
-            color += obj_color * material.diffuse * max(normal.dot_product(to_light.direction), 0) * shadow_index
+            color += obj_color * material.diffuse * max(normal.dot_product(to_light.direction), 0) * light.intensity * shadow_index
             # Blinn–Phong specular shading
             half_vector = (to_light.direction + to_cam).normalize()
-            color += light.color * material.specular * max(normal.dot_product(half_vector), 0) ** specular_k * shadow_index
+            color += light.color * material.specular * max(normal.dot_product(half_vector), 0) ** specular_k * light.intensity * shadow_index
 
         return color
