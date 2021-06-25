@@ -2,7 +2,9 @@ from image import Image
 from ray import Ray
 from point import Point
 from color import Color
-from math import sqrt, pi, tan
+from math import sqrt, pi, cos, sin
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 
 # renders 3D objects into 2D objects using ray tracing
@@ -19,18 +21,47 @@ class RenderEngine:
         aspect_ratio = float(width) / height
 
         camera = scene.camera
-        camera_angle_factor = tan((camera.angle / 360 * 2 * pi) / 2)
+        camera_angle_half = camera.angle / 180 * pi / 2
 
         # set up the ray steps according to pixels
         # most left as -1 and most right as +1, same for y axis
-        x0 = -1.0
-        x1 = +1.0
+        x0 = cos(-camera_angle_half) * (camera.look_at.x - camera.position.x) + sin(-camera_angle_half) * (
+                camera.look_at.z - camera.position.z) + camera.position.x
+        x1 = cos(+camera_angle_half) * (camera.look_at.x - camera.position.x) + sin(+camera_angle_half) * (
+                camera.look_at.z - camera.position.z) + camera.position.x
+
         # there are (width - 1) steps, same for  y axis
         xstep = (x1 - x0) / (width - 1)
-        y0 = -1.0 / aspect_ratio
-        y1 = +1.0 / aspect_ratio
+
+        z0 = -sin(-camera_angle_half) * (camera.look_at.x - camera.position.x) + cos(-camera_angle_half) * (
+                camera.look_at.z - camera.position.z) + camera.position.z
+        z1 = -sin(camera_angle_half) * (camera.look_at.x - camera.position.x) + cos(camera_angle_half) * (
+                camera.look_at.z - camera.position.z) + camera.position.z
+
+        zstep = (z1 - z0) / (width - 1)
+
+        y0 = -Point(x1 - x0, 0, z1 - z0).magnitude() / 2 / aspect_ratio
+        y1 = Point(x1 - x0, 0, z1 - z0).magnitude() / 2 / aspect_ratio
         ystep = (y1 - y0) / (height - 1)
-        z = camera.magnitude
+
+
+        # # todo visualize the camera
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111, projection='3d')
+        # ax.set_xlim(-3, 3)
+        # ax.set_ylim(-3, 3)
+        # ax.set_zlim(-3, 3)
+        #
+        # ax.scatter(camera.position.x, camera.position.y, camera.position.z, c='g')
+        # ax.scatter(camera.look_at.x, camera.look_at.y, camera.look_at.z, c='r')
+        # ax.scatter(x0, y0, z0, c='c')
+        # ax.scatter(x1, y0, z1, c='b')
+        # ax.scatter(x0, y1, z0, c='c', marker='^')
+        # ax.scatter(x1, y1, z1, c='b', marker='^')
+        # for i in scene.objects[2:]:
+        #     ax.scatter(i.center.x, i.center.y, i.center.z, c='y', s=i.radius*100)
+        #
+        # plt.show()
 
         # initialize pixels array
         pixels = Image(width, height)
@@ -40,8 +71,9 @@ class RenderEngine:
             y = y0 + j * ystep
             for i in range(width):
                 x = x0 + i * xstep
+                z = z0 + i * zstep
                 # shoot rays from the camera to each pixel
-                ray = Ray(camera.position, camera.direction + Point(x * camera_angle_factor, y * camera_angle_factor))
+                ray = Ray(camera.position, Point(x, y, z) - camera.position)
                 # set color to each pixel using ray trace
                 pixels.set_pixel(i, j, self.ray_trace(ray, scene))
             # print the progress

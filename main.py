@@ -10,9 +10,9 @@ from camera import Camera
 
 
 def main():
-    WIDTH = 200
+    WIDTH = 800
     HEIGHT = int(WIDTH / 2)
-    camera = Camera(position=Vector(0, 0, -2), look_at=Vector(0, 0, 0), angle=53.13)
+    camera = Camera(position=Vector(4, 0, 0.5), look_at=Vector(0, 0, 3), angle=53)
     objects = [
         # Ground Plane with Chequered Material, also a giant ball
         Sphere(Point(-1.8, 1000.5, 1), 1000.0, ChequeredMaterial(color1=Color.from_hex("#FFFFFF"),
